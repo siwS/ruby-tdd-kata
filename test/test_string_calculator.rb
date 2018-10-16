@@ -12,4 +12,48 @@ describe StringCalculator do
     end
   end
 
+  describe 'String Calculator' do
+    it 'must respond positively' do
+      expect(@string_calculator.add("")).must_equal(0)
+    end
+
+    describe 'when there is one argument' do
+      it 'must return this argument' do
+        expect(@string_calculator.add("1")).must_equal(1)
+      end
+    end
+
+    describe 'multiple numbers' do
+      describe 'when there are two numbers' do
+        it 'must add the numbers' do
+          expect(@string_calculator.add("1,2")).must_equal(3)
+        end
+      end
+
+      describe 'when the numbers are separated by commas' do
+        it 'must add all the numbers' do
+          expect(@string_calculator.add("1,2,3,4")).must_equal(10)
+        end
+      end
+
+      describe 'when there are newlines between the numbers' do
+        it 'must handle this case correctly' do
+          expect(@string_calculator.add("1\n2,3")).must_equal(6)
+        end
+      end
+
+      describe 'when there is a newline in the end' do
+        it 'raises an error' do
+          proc { @string_calculator.add("1,\n") }.must_raise "Invalid error"
+        end
+        it 'raises an error' do
+          assert_raises "Invalid Error" do
+            @string_calculator.add("1,\n")
+          end
+        end
+      end
+
+    end
+  end
 end
+
