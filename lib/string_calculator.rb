@@ -8,26 +8,33 @@ class StringCalculator
     raise "Invalid error"  if comma_followed_by_newline?(numbers)
 
     dilimeter = parse_dilimeter(numbers)
-    numbers_array = if dilimeter
-                      rest_of_text(numbers).split(/[\n#{dilimeter}]/)
-                    else
-                      numbers.split(/[\n,]/)
-                    end
+    numbers_array = calculate_numbers_array(dilimeter, numbers)
+    negative_numbers = numbers_array.select { |x| x.to_i < 0 }
+    raise "Negative numbers are not allowed: #{negative_numbers.join(" ")}"  if negative_numbers.any?
 
-    return numbers_array.map{ |x| x.to_i}.reduce(:+)
+    sum = numbers_array.map{ |x| x.to_i}.reduce(:+)
+    return sum
   end
 
 
-  def comma_followed_by_newline?(numbers)
+  private def comma_followed_by_newline?(numbers)
     /,\n/.match(numbers)
   end
 
-  def parse_dilimeter(numbers)
+  private def parse_dilimeter(numbers)
     /(?<=\/\/)./.match(numbers)
   end
 
-  def rest_of_text(numbers)
+  private def rest_of_text(numbers)
     /(?<=\/\/\W).*$/.match(numbers).post_match
+  end
+
+  private def calculate_numbers_array(dilimeter, numbers)
+    if dilimeter
+      rest_of_text(numbers).split(/[\n#{dilimeter}]/)
+    else
+      numbers.split(/[\n,]/)
+    end
   end
 
 end

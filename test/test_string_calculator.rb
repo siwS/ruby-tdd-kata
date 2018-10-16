@@ -46,6 +46,7 @@ describe StringCalculator do
         it 'raises an error' do
           proc { @string_calculator.add("1,\n") }.must_raise "Invalid error"
         end
+
         it 'raises an error' do
           assert_raises "Invalid Error" do
             @string_calculator.add("1,\n")
@@ -57,7 +58,28 @@ describe StringCalculator do
         it 'must use the new dilimeter' do
           expect(@string_calculator.add("//;\n1;2")).must_equal(3)
         end
+
+        it 'must use the ! dilimeter' do
+          expect(@string_calculator.add("//!\n1!2")).must_equal(3)
+        end
       end
+
+      describe 'when there are negative numbers' do
+        it 'raises an error and shows the negative number' do
+          error = assert_raises "Invalid Error" do
+            @string_calculator.add("1,2,3,-4")
+          end
+          assert_match /Negative numbers are not allowed: -4/, error.message
+        end
+
+        it 'raises an error and shows multiple negative numbers' do
+          error = assert_raises "Invalid Error" do
+            @string_calculator.add("1,-2,3,-4")
+          end
+          assert_match /Negative numbers are not allowed: -2 -4/, error.message
+        end
+      end
+
     end
   end
 end
