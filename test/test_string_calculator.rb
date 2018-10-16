@@ -53,6 +53,11 @@ describe StringCalculator do
         end
       end
 
+      describe 'when there is a dilimeter defined' do
+        it 'must use the new dilimeter' do
+          expect(@string_calculator.add("//;\n1;2")).must_equal(3)
+        end
+      end
     end
   end
 end

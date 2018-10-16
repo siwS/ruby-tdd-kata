@@ -7,7 +7,13 @@ class StringCalculator
     return 0 if numbers.empty?
     raise "Invalid error"  if comma_followed_by_newline?(numbers)
 
-    numbers_array = numbers.split(/[\n,]/)
+    dilimeter = parse_dilimeter(numbers)
+    numbers_array = if dilimeter
+                      rest_of_text(numbers).split(/[\n#{dilimeter}]/)
+                    else
+                      numbers.split(/[\n,]/)
+                    end
+
     return numbers_array.map{ |x| x.to_i}.reduce(:+)
   end
 
@@ -15,4 +21,13 @@ class StringCalculator
   def comma_followed_by_newline?(numbers)
     /,\n/.match(numbers)
   end
+
+  def parse_dilimeter(numbers)
+    /(?<=\/\/)./.match(numbers)
+  end
+
+  def rest_of_text(numbers)
+    /(?<=\/\/\W).*$/.match(numbers).post_match
+  end
+
 end
