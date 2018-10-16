@@ -1,3 +1,5 @@
+Solutions for colinfkennedy's [TDD Kata](https://github.com/colinfkennedy/ruby-tdd-kata)
+
 # The String Calculator TDD Kata in Ruby
 The following is a TDD Kata- an exercise in coding, refactoring and test-first, that you should apply daily for at least 15 minutes (I do 30).
 
