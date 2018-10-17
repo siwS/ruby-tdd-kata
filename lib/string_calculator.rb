@@ -7,12 +7,15 @@ class StringCalculator
     return 0 if numbers.empty?
     raise "Invalid error"  if comma_followed_by_newline?(numbers)
 
-    dilimeter = parse_dilimeter(numbers)
-    numbers_array = calculate_numbers_array(dilimeter, numbers)
-    negative_numbers = numbers_array.select { |x| x.to_i < 0 }
+    delimiter = parse_delimiter(numbers)
+    numbers_array = calculate_numbers_array(delimiter, numbers)
+    numbers_array = numbers_array.map { |x| x.to_i }
+
+    negative_numbers = numbers_array.select { |x| x < 0 }
     raise "Negative numbers are not allowed: #{negative_numbers.join(" ")}"  if negative_numbers.any?
 
-    sum = numbers_array.map{ |x| x.to_i}.reduce(:+)
+    numbers_less_than_1000 = numbers_array.select { |x| x < 1000 }
+    sum = numbers_less_than_1000.map{ |x| x.to_i }.reduce(:+)
     return sum
   end
 
@@ -21,7 +24,7 @@ class StringCalculator
     /,\n/.match(numbers)
   end
 
-  private def parse_dilimeter(numbers)
+  private def parse_delimiter(numbers)
     /(?<=\/\/)./.match(numbers)
   end
 
@@ -29,9 +32,9 @@ class StringCalculator
     /(?<=\/\/\W).*$/.match(numbers).post_match
   end
 
-  private def calculate_numbers_array(dilimeter, numbers)
-    if dilimeter
-      rest_of_text(numbers).split(/[\n#{dilimeter}]/)
+  private def calculate_numbers_array(delimiter, numbers)
+    if delimiter
+      rest_of_text(numbers).split(/[\n#{delimiter}]/)
     else
       numbers.split(/[\n,]/)
     end

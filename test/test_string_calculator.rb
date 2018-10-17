@@ -54,12 +54,12 @@ describe StringCalculator do
         end
       end
 
-      describe 'when there is a dilimeter defined' do
-        it 'must use the new dilimeter' do
+      describe 'when there is a delimiter defined' do
+        it 'must use the new delimiter' do
           expect(@string_calculator.add("//;\n1;2")).must_equal(3)
         end
 
-        it 'must use the ! dilimeter' do
+        it 'must use the ! delimiter' do
           expect(@string_calculator.add("//!\n1!2")).must_equal(3)
         end
       end
@@ -77,6 +77,12 @@ describe StringCalculator do
             @string_calculator.add("1,-2,3,-4")
           end
           assert_match /Negative numbers are not allowed: -2 -4/, error.message
+        end
+      end
+
+      describe 'when there numbers > 1000' do
+        it 'ignores the numbers > 1000' do
+          expect(@string_calculator.add("//!\n2!2000")).must_equal(2)
         end
       end
 
