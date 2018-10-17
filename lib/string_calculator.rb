@@ -3,11 +3,16 @@ class StringCalculator
     "OHAI!"
   end
 
-  def add numbers
+  def add(numbers)
     return 0 if numbers.empty?
     raise "Invalid error"  if comma_followed_by_newline?(numbers)
 
-    delimiter = parse_delimiter(numbers)
+    long_delimiter = long_delimiter(numbers)
+    if long_delimiter != nil && long_delimiter.size > 0
+      delimiter = long_delimiter[0]
+    else
+      delimiter = parse_delimiter(numbers)
+    end
     numbers_array = calculate_numbers_array(delimiter, numbers)
     numbers_array = numbers_array.map { |x| x.to_i }
 
@@ -38,6 +43,10 @@ class StringCalculator
     else
       numbers.split(/[\n,]/)
     end
+  end
+
+  private def long_delimiter(numbers)
+    /(?<=\/\/\[).+?(?=\]\n)/.match(numbers)
   end
 
 end

@@ -62,6 +62,16 @@ describe StringCalculator do
         it 'must use the ! delimiter' do
           expect(@string_calculator.add("//!\n1!2")).must_equal(3)
         end
+
+        describe 'with delimiters of longer than 1 char' do
+          it 'can parse the delimiter correctly' do
+            expect(@string_calculator.add("//[***]\n1***2***3")).must_equal(6)
+          end
+
+          it 'can parse the delimiter correctly if the delimiter consists of different chars' do
+            expect(@string_calculator.add("//[**!]\n1**!2**!3")).must_equal(6)
+          end
+        end
       end
 
       describe 'when there are negative numbers' do
